@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logout</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    background:#f4f4f4;
+}
+
+button{
+    background:#e53935;
+    color:white;
+    border:none;
+    padding:12px 25px;
+    font-size:18px;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#c62828;
+}
+</style>
+
+</head>
+<body>
+
+<button onclick="logout()">🚪 Logout</button>
+
+<script>
+
+// Example: Save login status after login
+localStorage.setItem("isLoggedIn","true");
+
+function logout(){
+
+    let confirmLogout = confirm("Are you sure you want to logout?");
+
+    if(confirmLogout){
+
+        // Remove login status
+        localStorage.removeItem("isLoggedIn");
+
+        alert("Logged out successfully!");
+
+        // Redirect to Login Page
+        window.location.href = "index.html";
+    }
+
+}
+
+</script>
+
+</body>
+</html>

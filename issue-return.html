@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Issue & Return Books</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4f4f4;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:#fff;
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,.2);
+}
+
+h2{
+text-align:center;
+margin-bottom:20px;
+color:#1565c0;
+}
+
+input{
+width:100%;
+padding:10px;
+margin:10px 0;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+button{
+padding:10px 20px;
+border:none;
+border-radius:5px;
+cursor:pointer;
+color:white;
+margin:5px;
+}
+
+.issue{
+background:#1565c0;
+}
+
+.return{
+background:#28a745;
+}
+
+.delete{
+background:red;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+th,td{
+border:1px solid #ddd;
+padding:10px;
+text-align:center;
+}
+
+th{
+background:#1565c0;
+color:white;
+}
+
+@media(max-width:768px){
+table{
+font-size:14px;
+}
+button{
+width:100%;
+margin-top:5px;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>📚 Issue / Return Books</h2>
+
+<input type="text" id="student" placeholder="Student Name">
+
+<input type="text" id="book" placeholder="Book Name">
+
+<button class="issue" onclick="issueBook()">Issue Book</button>
+
+<table>
+
+<thead>
+<tr>
+<th>Student</th>
+<th>Book</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="bookList"></tbody>
+
+</table>
+
+</div>
+
+<script>
+
+let records=JSON.parse(localStorage.getItem("records"))||[];
+
+function saveData(){
+localStorage.setItem("records",JSON.stringify(records));
+}
+
+function display(){
+
+let list=document.getElementById("bookList");
+
+list.innerHTML="";
+
+records.forEach((r,index)=>{
+
+list.innerHTML+=`
+<tr>
+
+<td>${r.student}</td>
+
+<td>${r.book}</td>
+
+<td>${r.status}</td>
+
+<td>
+
+${
+r.status=="Issued"
+?
+`<button class="return" onclick="returnBook(${index})">Return</button>`
+:
+"Returned"
+}
+
+<button class="delete" onclick="deleteBook(${index})">
+Delete
+</button>
+
+</td>
+
+</tr>
+`;
+
+});
+
+}
+
+function issueBook(){
+
+let student=document.getElementById("student").value;
+
+let book=document.getElementById("book").value;
+
+if(student==""||book==""){
+alert("Fill all fields");
+return;
+}
+
+records.push({
+student:student,
+book:book,
+status:"Issued"
+});
+
+saveData();
+
+display();
+
+document.getElementById("student").value="";
+document.getElementById("book").value="";
+
+}
+
+function returnBook(index){
+
+records[index].status="Returned";
+
+saveData();
+
+display();
+
+}
+
+function deleteBook(index){
+
+records.splice(index,1);
+
+saveData();
+
+display();
+
+}
+
+display();
+
+</script>
+
+</body>
+</html>

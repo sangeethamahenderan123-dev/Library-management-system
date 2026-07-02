@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Library Statistics</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body{
+    font-family:Arial;
+    background:#f4f4f4;
+    text-align:center;
+    padding:20px;
+}
+.chart-box{
+    width:90%;
+    max-width:700px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,.2);
+}
+canvas{
+    max-width:100%;
+}
+</style>
+</head>
+
+<body>
+
+<div class="chart-box">
+<h2>📊 Library Statistics</h2>
+
+<canvas id="libraryChart"></canvas>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+// Get data from Local Storage
+let books = JSON.parse(localStorage.getItem("books")) || [];
+let students = JSON.parse(localStorage.getItem("students")) || [];
+let records = JSON.parse(localStorage.getItem("records")) || [];
+
+let issued = records.filter(r => r.status === "Issued").length;
+let returned = records.filter(r => r.status === "Returned").length;
+
+const ctx = document.getElementById("libraryChart").getContext("2d");
+
+new Chart(ctx,{
+    type:"bar",
+    data:{
+        labels:["Books","Students","Issued","Returned"],
+        datasets:[{
+            label:"Library Statistics",
+            data:[
+                books.length,
+                students.length,
+                issued,
+                returned
+            ],
+            backgroundColor:[
+                "#3498db",
+                "#2ecc71",
+                "#f39c12",
+                "#e74c3c"
+            ]
+        }]
+    },
+    options:{
+        responsive:true,
+        scales:{
+            y:{
+                beginAtZero:true
+            }
+        }
+    }
+});
+</script>
+
+
+</body>
+</html>

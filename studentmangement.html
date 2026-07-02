@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Management</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f2f2f2;
+padding:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+background:#fff;
+padding:20px;
+border-radius:10px;
+box-shadow:0 0 10px rgba(0,0,0,.2);
+}
+
+h2{
+text-align:center;
+margin-bottom:20px;
+color:#1565c0;
+}
+
+input{
+width:100%;
+padding:10px;
+margin:8px 0;
+border:1px solid #ccc;
+border-radius:5px;
+}
+
+button{
+padding:10px 20px;
+background:#1565c0;
+color:white;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+button:hover{
+background:#0d47a1;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+table,th,td{
+border:1px solid #ccc;
+}
+
+th{
+background:#1565c0;
+color:white;
+}
+
+th,td{
+padding:10px;
+text-align:center;
+}
+
+.delete{
+background:red;
+}
+
+.delete:hover{
+background:darkred;
+}
+
+@media(max-width:768px){
+
+table{
+font-size:14px;
+}
+
+button{
+width:100%;
+margin-top:10px;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>🎓 Student Management</h2>
+
+<input type="text" id="name" placeholder="Student Name">
+<input type="text" id="roll" placeholder="Roll Number">
+<input type="text" id="course" placeholder="Course">
+
+<button onclick="addStudent()">Add Student</button>
+
+<table>
+
+<thead>
+<tr>
+<th>Name</th>
+<th>Roll No</th>
+<th>Course</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="studentList"></tbody>
+
+</table>
+
+</div>
+
+<script>
+
+let students = JSON.parse(localStorage.getItem("students")) || [];
+
+function saveData(){
+localStorage.setItem("students",JSON.stringify(students));
+}
+
+function displayStudents(){
+
+let list=document.getElementById("studentList");
+
+list.innerHTML="";
+
+students.forEach((student,index)=>{
+
+list.innerHTML+=`
+<tr>
+<td>${student.name}</td>
+<td>${student.roll}</td>
+<td>${student.course}</td>
+<td>
+<button class="delete" onclick="deleteStudent(${index})">
+Delete
+</button>
+</td>
+</tr>
+`;
+
+});
+
+}
+
+function addStudent(){
+
+let name=document.getElementById("name").value;
+let roll=document.getElementById("roll").value;
+let course=document.getElementById("course").value;
+
+if(name=="" || roll=="" || course==""){
+alert("Please fill all fields");
+return;
+}
+
+students.push({
+name:name,
+roll:roll,
+course:course
+});
+
+saveData();
+displayStudents();
+
+document.getElementById("name").value="";
+document.getElementById("roll").value="";
+document.getElementById("course").value="";
+
+}
+
+function deleteStudent(index){
+
+students.splice(index,1);
+
+saveData();
+
+displayStudents();
+
+}
+
+displayStudents();
+
+</script>
+
+</body>
+</html>

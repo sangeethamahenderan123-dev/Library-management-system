@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Library Dashboard</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    display:flex;
+    background:#f4f6f9;
+    transition:.3s;
+}
+
+.sidebar{
+    width:240px;
+    background:#1565c0;
+    color:#fff;
+    min-height:100vh;
+    padding:20px;
+}
+
+.sidebar h2{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.sidebar a{
+    display:block;
+    color:#fff;
+    text-decoration:none;
+    padding:12px;
+    margin:10px 0;
+    border-radius:8px;
+}
+
+.sidebar a:hover{
+    background:rgba(255,255,255,.2);
+}
+
+.main{
+    flex:1;
+}
+
+.topbar{
+    background:#fff;
+    padding:15px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+.toggle{
+    border:none;
+    background:#1565c0;
+    color:#fff;
+    padding:10px 15px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+    padding:20px;
+}
+
+.card{
+    background:#fff;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 3px 10px rgba(0,0,0,.1);
+    text-align:center;
+}
+
+.card i{
+    font-size:40px;
+    color:#1565c0;
+    margin-bottom:10px;
+}
+
+.card h3{
+    margin:10px 0;
+}
+
+.activity{
+    background:#fff;
+    margin:20px;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 3px 10px rgba(0,0,0,.1);
+}
+
+.activity ul{
+    margin-top:15px;
+}
+
+.activity li{
+    margin:10px 0;
+}
+
+.dark{
+    background:#121212;
+    color:#fff;
+}
+
+.dark .topbar,
+.dark .card,
+.dark .activity{
+    background:#1f1f1f;
+    color:#fff;
+}
+
+@media(max-width:768px){
+
+body{
+    flex-direction:column;
+}
+
+.sidebar{
+    width:100%;
+    min-height:auto;
+}
+
+.topbar{
+    flex-direction:column;
+    gap:10px;
+}
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+<h2>📚 Library</h2>
+
+<a href="dashboard.html"><i class="fa fa-home"></i> Dashboard</a>
+<a href="books.html"><i class="fa fa-book"></i> Books</a>
+<a href="studentmangement.html"><i class="fa fa-users"></i> Students</a>
+<a href="issue-return.html"><i class="fa fa-arrow-right-arrow-left"></i> Issue / Return</a>
+<a href="chart.html"><i class="fa fa-chart-column"></i> Statistics</a>
+<a href="logout.html"><i class="fa fa-right-from-bracket"></i> Logout</a>
+
+</div>
+
+<div class="main">
+
+<div class="topbar">
+<h2>Library Dashboard</h2>
+<button class="toggle" onclick="darkMode()">
+🌙 Dark Mode
+</button>
+</div>
+
+<div class="cards">
+
+<div class="card">
+<i class="fa fa-book"></i>
+<h3>Books</h3>
+<h1 id="bookCount">0</h1>
+</div>
+
+<div class="card">
+<i class="fa fa-users"></i>
+<h3>Students</h3>
+<h1 id="studentCount">0</h1>
+</div>
+
+<div class="card">
+<i class="fa fa-book-open-reader"></i>
+<h3>Issued</h3>
+<h1 id="issuedCount">0</h1>
+</div>
+
+<div class="card">
+<i class="fa fa-rotate-left"></i>
+<h3>Returned</h3>
+<h1 id="returnedCount">0</h1>
+</div>
+
+</div>
+
+<div class="activity">
+<h2>Recent Activity</h2>
+
+<ul>
+<li>📖 Java Programming issued to Rahul</li>
+<li>📚 Python Basics returned by Priya</li>
+<li>➕ New book added: Data Structures</li>
+<li>👨 New student registered</li>
+</ul>
+
+</div>
+
+</div>
+
+<script>
+function darkMode(){
+document.body.classList.toggle("dark");
+}
+
+let books = JSON.parse(localStorage.getItem("books")) || [];
+let students = JSON.parse(localStorage.getItem("students")) || [];
+let records = JSON.parse(localStorage.getItem("records")) || [];
+
+// Update dashboard counts
+document.getElementById("bookCount").innerHTML = books.length;
+document.getElementById("studentCount").innerHTML = students.length;
+
+let issued = records.filter(r => r.status === "Issued").length;
+let returned = records.filter(r => r.status === "Returned").length;
+
+document.getElementById("issuedCount").innerHTML = issued;
+document.getElementById("returnedCount").innerHTML = returned;
+</script>
+
+</body>
+</html>
